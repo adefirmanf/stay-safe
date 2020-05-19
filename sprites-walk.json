@@ -22,13 +22,6 @@
       "height": 52
     },
     {
-      "name": "sprite269",
-      "x": 211,
-      "y": 716,
-      "width": 26,
-      "height": 52
-    },
-    {
       "name": "sprite270",
       "x": 274,
       "y": 716,
@@ -40,20 +33,6 @@
       "x": 402,
       "y": 716,
       "width": 33,
-      "height": 52
-    },
-    {
-      "name": "sprite272",
-      "x": 467,
-      "y": 716,
-      "width": 36,
-      "height": 52
-    },
-    {
-      "name": "sprite273",
-      "x": 532,
-      "y": 716,
-      "width": 25,
       "height": 52
     }
   ]

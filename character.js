@@ -31,6 +31,9 @@ class Character {
     this.index += this.speed;
     this.frames = floor(this.index % this.animation.length);
   }
+  hits(object){
+    return collideRectRect(this.x,this.y,25,this.animation[this.frames || 0].height,object.x1,object.y,object.width,object.height);
+  }
   getYPosition() {
     return this.y;
   }
@@ -45,7 +48,7 @@ class Character {
     rect(
       this.x,
       this.y,
-      this.animation[this.frames || 0].width,
+      25  ,
       this.animation[this.frames || 0].height
     );
 

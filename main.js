@@ -14,6 +14,7 @@ let x1 = 0;
 let x2;
 
 let apple = [];
+let totalApple = 0
 let trap = [];
 
 let score = 0;
@@ -104,6 +105,9 @@ function draw() {
   drawTrap();
   drawApple();
   drawScore();
+  drawHealthBar();
+  drawLife();
+  debug();
   // When character hit the ground, reset currentJump
   if (character.getYPosition() == character.getYConstPosition()) {
     currentJump = 0;
@@ -132,13 +136,24 @@ function drawBg() {
   bgImg[3].draw();
 }
 
+function drawHealthBar() {
+  textSize(width - (width - 20));
+  fill(220);
+  score += 1;
+  text(`APPLE ${totalApple}`, 10, height - (height - 45));
+}
 function drawScore() {
   textSize(width - (width - 20));
   fill(220);
   score += 1;
   text(`SCORE 0000${score}`, 10, height - (height - 25));
 }
-
+function drawLife(){
+  textSize(width - (width - 20));
+  fill(220);
+  score += 1;
+  text(`LIFE 0`, 10, height - (height - 65));
+}
 function drawTrap() {
   // image(iconImg.apple, 10, 10, iconImg.apple.width, iconImg.apple.height);
   if (random(1) < 0.009) {
@@ -149,7 +164,7 @@ function drawTrap() {
         height - 40,
         iconImg.trap.width,
         iconImg.trap.height,
-        4
+        3 
       )
     );
   }
@@ -157,6 +172,15 @@ function drawTrap() {
     trap.map((n) => {
       n.draw();
       n.move();
+
+      // Memory optimization, delete after - n.x1 > width. 
+      if (- n.x1 > width){
+        trap.shift()
+      }
+
+      if (character.hits(n)){
+        noLoop()
+      }
     });
   }
 }
@@ -175,9 +199,28 @@ function drawApple() {
     );
   }
   if (apple) {
-    apple.map((n) => {
+    apple.map((n, i) => {
       n.draw();
       n.move();
+
+      // Memory optimization, delete after - n.x1 > width. 
+      if (- n.x1 > width){
+        apple.shift()
+      }
+
+      // When character get apple, score should be added 
+      if (character.hits(n)){
+        totalApple += 1
+        apple.splice(i, 1)
+      }
     });
   }
 }
+
+function debug(){
+  textSize(width - (width - 20));
+  fill(220);
+  score += 1;
+  text(`Total Apple in Storage: ${apple.length}`, width - 200, height - (height - 25));
+  text(`Total Trap in Storage:  ${trap.length}`, width - 200, height - (height - 45));
+} 
