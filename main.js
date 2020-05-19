@@ -1,3 +1,5 @@
+let play = true 
+let invisible = false 
 let character;
 
 let spritesheet;
@@ -14,10 +16,12 @@ let x1 = 0;
 let x2;
 
 let apple = [];
-let totalApple = 0
 let trap = [];
 
 let score = 0;
+let totalApple = 0
+let life = 1
+
 let maxJump = 1;
 let currentJump = 0;
 
@@ -83,11 +87,14 @@ function setup() {
   // apple.push(new );
 
   textFont(font);
-  console.log(apple);
 }
 
 function keyPressed() {
-  if (key == ' ') {
+  if (key == ' ' && !play){
+    play = true 
+    character.jump();
+  }
+  else if (key == ' ') {
     if (
       character.getYPosition() == character.getYConstPosition() ||
       currentJump < maxJump
@@ -97,23 +104,40 @@ function keyPressed() {
       character.animate(false);
     }
   }
+  if (keyCode == ENTER && !play){
+    play = true
+    character.jump(); 
+    loop()
+  }
 }
 
 function draw() {
+
   background(220);
   drawBg();
-  drawTrap();
-  drawApple();
-  drawScore();
-  drawHealthBar();
-  drawLife();
-  debug();
-  // When character hit the ground, reset currentJump
-  if (character.getYPosition() == character.getYConstPosition()) {
-    currentJump = 0;
-  }
 
-  drawCharacter();
+  if (play){
+    drawTrap();
+    drawApple();
+    drawScore();
+    drawLife();
+    drawHealthBar();
+
+    // When character hit the ground, reset currentJump
+    if (character.getYPosition() == character.getYConstPosition()) {
+      currentJump = 0;
+    }
+  
+    drawCharacter();
+
+    if (totalApple == 20 ){
+      life += 1
+      totalApple = 0
+    }
+  }
+  else{
+    // drawMenu();
+  }
 }
 
 function drawCharacter() {
@@ -136,23 +160,26 @@ function drawBg() {
   bgImg[3].draw();
 }
 
-function drawHealthBar() {
-  textSize(width - (width - 20));
-  fill(220);
-  score += 1;
-  text(`APPLE ${totalApple}`, 10, height - (height - 45));
-}
 function drawScore() {
+  textAlign(CENTER)
+  textSize(width - (width - 20));
+  fill(220);
+  score += 1
+  text(`SCORE ${score}`, width - 50, height - (height - 25));
+  // text(`${score}`, width - 10, height - (height - 25));
+}
+function drawHealthBar() {
+  textAlign(LEFT)
   textSize(width - (width - 20));
   fill(220);
   score += 1;
-  text(`SCORE 0000${score}`, 10, height - (height - 25));
+  text(`APPLE ${totalApple}`, width - (width - 10), height - (height - 45));
 }
 function drawLife(){
+  textAlign(LEFT)
   textSize(width - (width - 20));
   fill(220);
-  score += 1;
-  text(`LIFE 0`, 10, height - (height - 65));
+  text(`LIFE ${life}`, width - (width - 10), height - (height  - 25));
 }
 function drawTrap() {
   // image(iconImg.apple, 10, 10, iconImg.apple.width, iconImg.apple.height);
@@ -169,7 +196,8 @@ function drawTrap() {
     );
   }
   if (trap) {
-    trap.map((n) => {
+    trap.map((n, i) => {
+      let collideId = 0
       n.draw();
       n.move();
 
@@ -178,8 +206,19 @@ function drawTrap() {
         trap.shift()
       }
 
-      if (character.hits(n)){
+      if (character.hits(n) && life == 0){
+        play = false 
+        textSize(24);
+        fill(220);
+        textAlign(CENTER)
+        textLeading(90)
+        text(`GAME OVER`, (width - 300), (height / 2));
+        text(`PRESS CTRL + R TO RESTART`, (width - 300), (height / 2)+ 25);
         noLoop()
+      }
+      else if (character.hits(n)){
+        life = life - 1
+        trap.splice(i, 1)
       }
     });
   }
@@ -217,10 +256,24 @@ function drawApple() {
   }
 }
 
-function debug(){
-  textSize(width - (width - 20));
+function drawMenu(){
+  // Title Menu
+  textSize(width - 500);
   fill(220);
-  score += 1;
-  text(`Total Apple in Storage: ${apple.length}`, width - 200, height - (height - 25));
-  text(`Total Trap in Storage:  ${trap.length}`, width - 200, height - (height - 45));
-} 
+  textAlign(CENTER)
+  textLeading(90)
+  text(`Stay \nSafe`, (width - 300), (height / 2) - 10);
+
+  // Blink space bar
+  textSize(24);
+  fill(220);
+  textAlign(CENTER)
+  textLeading(90)
+  text(`PRESS SPACEBAR TO START`, (width - 300), (height / 2) + 125);
+
+  textSize(16);
+  fill(220);
+  textAlign(CENTER)
+  textLeading(90)
+  text(`RIZKA - 41517110057       ADE - 41517110172      NURDIN - 41517110089       ARYANDA - 41517110140`, (width - 300), (height / 2) + 225);
+}

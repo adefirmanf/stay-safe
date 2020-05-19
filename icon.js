@@ -8,7 +8,7 @@ class Icon {
     this.x1 = x1;
   }
   draw() {
-    this._debug();
+    // this._debug();
     this.temp = image(this.image, this.x1, this.y, this.width, this.height);
   }
   move() {

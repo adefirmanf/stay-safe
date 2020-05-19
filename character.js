@@ -24,7 +24,7 @@ class Character {
     this.frames = floor(this.index % this.animation.length);
   }
   show() {
-    this._debug();
+    // this._debug();
     image(this.animation[this.frames || 0], this.x, this.y);
   }
   animate(isPlay = true) {
