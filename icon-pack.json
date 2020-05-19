@@ -1,0 +1,9 @@
+{
+  "sprite": [
+    { "name": "trap", "x": 451, "y": 329, "width": 26, "height": 17 },
+    { "name": "apple", "x": 4, "y": 451, "width": 24, "height": 26 },
+    { "name": "strawberry", "x": 133, "y": 451, "width": 22, "height": 25 },
+    { "name": "grape", "x": 166, "y": 451, "width": 21, "height": 26 },
+    { "name": "banana", "x": 36, "y": 453, "width": 23, "height": 23 }
+  ]
+}
