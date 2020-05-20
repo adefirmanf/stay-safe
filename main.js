@@ -1,4 +1,4 @@
-let play = true 
+let play = false 
 let invisible = false 
 let character;
 
@@ -25,6 +25,9 @@ let life = 1
 let maxJump = 1;
 let currentJump = 0;
 
+let getAppleSFX;
+let introSound;
+
 function preload() {
   spritesheet = loadImage('spritesheet.png');
   bgImg[0] = loadImage('./bg/Layer_0000_9.png');
@@ -43,14 +46,24 @@ function preload() {
   iconsheet = loadImage('icon-pack.png');
   icondata = loadJSON('icon-pack.json');
   font = loadFont('PIXELADE.TTF');
+
+  // getAppleSFX = loadSound("getApple.wav")
+  // soundFormats('mp3')
+  introSound = new Howl({
+    src : ['getApple.wav']
+  })
+  playSound = new Howl({
+    src : ['intro.mp3']
+  })
 }
 
 function setup() {
   frameRate(50);
   const w = 600;
   const h = 500;
-  createCanvas(w, h);
-
+  let canvas = createCanvas(w, h);
+  canvas.parent("p5")
+  // introSound.setVolume(0.1);
   let frames = spritedata.sprite;
   let iconframes = icondata.sprite;
 
@@ -117,6 +130,7 @@ function draw() {
   drawBg();
 
   if (play){
+
     drawTrap();
     drawApple();
     drawScore();
@@ -136,7 +150,7 @@ function draw() {
     }
   }
   else{
-    // drawMenu();
+    drawMenu();
   }
 }
 
@@ -257,6 +271,7 @@ function drawApple() {
 }
 
 function drawMenu(){
+  // introSound.play()
   // Title Menu
   textSize(width - 500);
   fill(220);
